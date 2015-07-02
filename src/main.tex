@@ -89,17 +89,16 @@ as does TLS.
 Similarly to TLS, QUIC has two types of handshake connections.
 One is called a full handshake --
 a handshake ``from scratch" between a client and a server.
-The other is called a resumption -- an abbreviated handshake,
-which occurs when a client and a server have once established a full handshake session
+The other is called a abbreviate handshake -- a handshake which occurs when a client and a server have once established a full handshake session
 and want to establish a new session between them in an abbreviate way.
 Unlike TLS,
 QUIC only supports the elliptic-curve Diffie-Hellman key-exchange (ECDHE) cipher-suite and server authentication.
 %
-One of the good features of QUIC is that it can establish a resumption session
+One of the good features of QUIC is that it can establish a abbreviate handshake session
 with $0$-RTT connectivity overhead.
-Namely, in the QUIC resumption, a client can
-send encrypted data to a server, concurrently with resuming a new session.
-We provide the abstract model of the full handshake and resumption protocols of QUIC.
+Namely, in the QUIC abbreviate handshake, a client can
+send encrypted data to a server, concurrently with establishing a new session.
+We provide the abstract model of the full and abbreviate handshake and of QUIC.
 
 % ---------------------------------------
 \section{Prior Security Analyses and Some Security Concern}
@@ -107,38 +106,11 @@ We provide the abstract model of the full handshake and resumption protocols of 
 
 To the best of our knowledge, there are only two security analyses on QUIC~\cite{FG14:QUIC,LJBN15:QUIC}.
 Both papers define new security models and show that QUIC is secure in that model.
-In~\cite{FG14:QUIC}, they formalized a secure authenticated key-exchange
-as an extension of the Bellare-Rogaway model~\cite{BR93:AKE} and analysed
-the security of QUIC (with resumption).
-However, the QUIC protocol analysed in \cite{FG14:QUIC} is slightly different from the protocol
-given in the source codes.
-As described in Fig.~\ref{fig:quic}, the QUIC protocol makes a server send a ciphertext (using authenticated encryption) in the full handshake protocol,
-which cannot preserve \textit{key-indistinguishability}.
-Therefore, the authenticated and channel confidentiality establishment (ACCE)
-model~\cite{JKSS12:ACCE} is more suitable to analyse QUIC.
-Another important security issue is that in~\cite{FG14:QUIC},
-an adversary is allowed to send a ``test" query only to a client oracle (to receive either a real session-key
-or  a random key from the client oracle),  when a protocol is server-only authenticated.
-Apparently, the restriction is appropriate, because  an adversary can establish a session with
-a honest server (due to the lack of client's certificate) to share a session key.
-However, if resumption is provided, we should consider the attack that,
-after a honest client and a honest server establish a full handshake session,
-an adversary might hijack a resumption session -- it might impersonate the initial client and
-share a session key with the server.
-To protect the attack, we should allow an adversary to send test queries to \textit{server}  oracles
-in resumption sessions (including the full handshake session),
-as long as the initial full handshake session is established between a honest client and a honest server.
-We can consider a weaker attack:
-The adversary cannot share a session key with the server, but it can make the server accept in
-a resumption session. (Note that in a full handshake session,
-it is a ``trivial" attack, because an adversary can always do so.)
-Protection of this attack guarantees that only parties that establish the initial full handshake session can
-resume and establish a new resumption session.
-Without this protection, we would possibly have an actual inconvenience.
-The aim of resumption is to resume a new session more rapidly than a full handshake session.
-In QUIC, it actually achieves $0$-RTT.
-However, if this attack succeeds, the client and server will have inconsistent cache data
-and they cannot resume a new session, which means that they must establish a full handshake session again.
+In~\cite{LJBN15:QUIC}, they formalized a secure authenticated key-exchange
+as an extension of the ACCE model~\cite{JKSS12:ACCE} and analysed
+the security of QUIC.
+They prove the security of QUIC as it is and found a new attack.
+
 
 %=====================================
 \subsection{Related Work} \label{sec:Related Work}
