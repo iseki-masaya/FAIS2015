@@ -1,0 +1,221 @@
+% --------------------------------------------------------------------------------------------
+% ---------- 日本応用数理学会年会予稿集原稿テンプレート ----------
+% --------------------------------------------------------------------------------------------
+%
+% ---------- 変更しないでください（ここから） ----------
+\documentclass[11pt,a4j]{jarticle}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\topmargin}{-.5cm}
+\setlength{\headheight}{0cm}
+\setlength{\headsep}{0cm}
+\setlength{\footskip}{0cm}
+\setlength{\textwidth}{16cm}
+\setlength{\textheight}{24.7cm}
+\setlength{\abovecaptionskip}{0cm}
+\pagestyle{empty}
+\makeatletter
+\renewcommand{\baselinestretch}{1.3}\selectfont
+\def\Title#1{{\Large\bf#1}\\[6pt]}
+\def\Author#1{{\normalsize\hspace*{2zw}#1}\\[-4pt]}
+\def\Affiliation#1{{\normalsize\hspace*{2zw}#1}\\[-5pt]}
+\def\Email#1{\hspace*{2zw}e-mail : #1\\[0pt]}
+\renewcommand{\section}{\@startsection{section}{1}{\z@}%
+{2ex}{1ex}{\reset@font\large\bfseries}}%
+\renewcommand{\thesection}{\@arabic\c@section}
+\def\@listi{\topsep=.3\baselineskip \parsep=.2ex \partopsep=0ex%
+\itemsep=0ex \leftmargin=4ex \rightmargin=2ex}
+\let\@listI\@listi
+\@listi\def\@listii{\parsep=.2ex \partopsep=0pt \itemsep=0ex%
+\leftmargin=4ex \rightmargin=0ex}
+\let\@listiii\@listii
+\let\@listiv\@listii
+\let\@listv\@listii
+\let\@listvi\@listii
+\long\def\@makecaption#1#2{\footnotesize\sbox\@tempboxa{#1. #2}
+\ifdim\wd\@tempboxa >\hsize #1. #2\par
+\else \global\@minipagefalse
+\hb@xt@\hsize{\hfil\box\@tempboxa\hfil}
+\fi}
+\makeatother
+% ---------- 変更しないでください（ここまで） ----------
+%
+% ---------- お好みで変更および追加してください（ここから） ----------
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{url}
+\newtheorem{thm}{定理}
+\newtheorem{df}[thm]{定義}
+\newtheorem{lem}[thm]{補助定理}
+\newtheorem{prop}[thm]{補題}
+\def\proof{{\bf 証明}\hspace*{1zw}}
+\def\thanks{~\\[.5\baselineskip]{\bf 謝辞}\hspace*{1zw}}
+\def\labelenumi{\theenumi)}
+% ---------- お好みで変更および追加してください（ここまで） ----------
+%
+\begin{document}
+\twocolumn[
+%
+% ---------- タイトル，著者名，所属，e-mailアドレスを記入してください（ここから） ----------
+\Title{On the security of QUIC}
+%%% 著者，所属が複数行になる場合は \author{}，\affiliation{}を追加してください
+\Author{Masaya Iseki$^{1}$, Eiichiro Fujisaki$^{2}$}
+\Affiliation{$^{1}$Tokyo Institute of Technology ,$^{2}$NTT Secure platform}
+\Email{iseki.m.aa@m.titech.ac.jp, fujisaki.eiichiro@lab.ntt.co.jp}
+% ---------- タイトル，著者名，所属，e-mailアドレスを記入してください（ここまで） ----------
+%
+]
+% ---------- 変更しないでください（ここから） ----------
+\renewcommand{\baselinestretch}{0.95}\selectfont
+% ---------- 変更しないでください（ここまで） ----------
+%
+% ---------- 本文（ここから）--------------------------------------------------------------------------------------------
+%
+% ---------------------------------------
+\section{Introduction}
+% ---------------------------------------
+
+Quick UDP Internet Connections (QUIC for short)
+is a new transport layer network protocol recently proposed by Google~\cite{QUIC},
+which is experimentally implemented in Google Chrome.
+The main purpose of developing QUIC is to provide an alternative equivalence of TLS wrapping TCP,
+with much reduced latency and better SPDY support.
+Transport Layer Security (TLS) starts with a three-move TCP handshake
+before initiating the TLS Handshake Protocol.
+In contrast, QUIC uses UDP and starts with its own handshake,
+which reduces the total number of interactions.
+The cryptographic core of QUIC is specified in the QUIC crypto protocol~\cite{QUIC:Crypto},
+which consists of a handshake protocol and a record layer protocol,
+as does TLS.
+Similarly to TLS, QUIC has two types of handshake connections.
+One is called a full handshake --
+a handshake ``from scratch" between a client and a server.
+The other is called a resumption -- an abbreviated handshake,
+which occurs when a client and a server have once established a full handshake session
+and want to establish a new session between them in an abbreviate way.
+Unlike TLS,
+QUIC only supports the elliptic-curve Diffie-Hellman key-exchange (ECDHE) cipher-suite and server authentication.
+%
+One of the good features of QUIC is that it can establish a resumption session
+with $0$-RTT connectivity overhead.
+Namely, in the QUIC resumption, a client can
+send encrypted data to a server, concurrently with resuming a new session.
+We provide the abstract model of the full handshake and resumption protocols of QUIC
+in Fig.~\ref{fig:quic}.
+
+% ---------------------------------------
+\section{Prior Security Analyses and Some Security Concern}
+% ---------------------------------------
+
+To the best of our knowledge, there are only two security analyses on QUIC~\cite{FG14:QUIC,LJBN15:QUIC}.
+Both papers define new security models and show that QUIC is secure in that model.
+In~\cite{FG14:QUIC}, they formalized a secure authenticated key-exchange
+as an extension of the Bellare-Rogaway model~\cite{BR93:AKE} and analysed
+the security of QUIC (with resumption).
+However, the QUIC protocol analysed in \cite{FG14:QUIC} is slightly different from the protocol
+given in the source codes.
+As described in Fig.~\ref{fig:quic}, the QUIC protocol makes a server send a ciphertext (using authenticated encryption) in the full handshake protocol,
+which cannot preserve \textit{key-indistinguishability}.
+Therefore, the authenticated and channel confidentiality establishment (ACCE)
+model~\cite{JKSS12:ACCE} is more suitable to analyse QUIC.
+Another important security issue is that in~\cite{FG14:QUIC},
+an adversary is allowed to send a ``test" query only to a client oracle (to receive either a real session-key
+or  a random key from the client oracle),  when a protocol is server-only authenticated.
+Apparently, the restriction is appropriate, because  an adversary can establish a session with
+a honest server (due to the lack of client's certificate) to share a session key.
+However, if resumption is provided, we should consider the attack that,
+after a honest client and a honest server establish a full handshake session,
+an adversary might hijack a resumption session -- it might impersonate the initial client and
+share a session key with the server.
+To protect the attack, we should allow an adversary to send test queries to \textit{server}  oracles
+in resumption sessions (including the full handshake session),
+as long as the initial full handshake session is established between a honest client and a honest server.
+We can consider a weaker attack:
+The adversary cannot share a session key with the server, but it can make the server accept in
+a resumption session. (Note that in a full handshake session,
+it is a ``trivial" attack, because an adversary can always do so.)
+Protection of this attack guarantees that only parties that establish the initial full handshake session can
+resume and establish a new resumption session.
+Without this protection, we would possibly have an actual inconvenience.
+The aim of resumption is to resume a new session more rapidly than a full handshake session.
+In QUIC, it actually achieves $0$-RTT.
+However, if this attack succeeds, the client and server will have inconsistent cache data
+and they cannot resume a new session, which means that they must establish a full handshake session again.
+
+%=====================================
+\subsection{Related Work} \label{sec:Related Work}
+%=====================================
+There are a huge body of works on authenticated key exchange protocols
+(See~\cite{CK01:AKE} for survey).
+An important stream of research dates back to Bellare and Rogaway~\cite{BR93:AKE}.
+% followed by~\cite{DB96,Blei98,JMDP00,JB02,EK09,KK05:TLS,KCRE08,SMOAJ08,KTT11,Kraw01}.
+However, as mentioned above,
+the QUIC full handshake protocol does not satisfy key-indistinguishability as in the Bellare-Rogaway like model, because a server sends a ciphertext (using authenitcated encryption) in the full handshake protocol, as does TLS.
+TLS Handshake Protocol is recently analysed in various security models, e.g., ~\cite{JKSS12:ACCE,KPW13:SACCE,FS13:ACCE,GKS13:RACCE,BDKSS14:SSH,BFKPSB14:TLS}.
+Still,
+the security model for analysing a server-only authenticated connection of TLS,
+i.e., Server-Only Authenticated and Confidential Channel Establishment
+(SACCE)~\cite{KPW13:SACCE}, does not capture our security issues.
+This is because, besides not treating the resumption originally,
+the SACCE security model only concerns, which is more essential,
+\textit{server} authentication and a \textit{client's} message confidentiality.
+However, these issues appear in (some kind of) \textit{client} authentication
+and \textit{server} confidentiality.
+
+%--------------------------------------------------------
+\subsection{Our Results} \label{sec:proposal}
+%--------------------------------------------------------
+
+To treat the security issues above,
+we introduce a new security model, what we call \textit{Resumable} SACCE (RSACCE) security,
+where we consider a server's message confidentiality, as well as a client's message confidentiality,
+where an adversary is allowed to send an encryption query to a \textit{server}
+(to break a server's message confidentiality)
+both in the full handshake session and its successor resumption sessions,
+as far as the server establishes the initial full handshake session
+with a \textit{honest} client.
+We also provide a stronger model, called strong RSACCE security,
+where we ensure that a sever can establish a resumption session only with the \textit{same} client as
+initially connected in the full handshake session.
+We require in that model forward secrecy among all independent sessions.
+For resumption to be effective, we compromise but still require
+some level of forward secrecy among related resumption sessions.
+
+
+%
+We analyse QUIC as it is, and prove that QUIC meets RSACCE security, but it does not meet
+the strong RSACCE one.
+We also analyse an optional version of QUIC with CETV, QUIC with an optional client encrypted tag value
+(CETV) mechanism, and show that it meets strong RSACCE security.
+
+% -------
+\thanks
+% -------
+%
+\dotfill \\ \dotfill
+%
+% ---------------------------------
+\begin{thebibliography}{10}
+% ---------------------------------
+%
+\bibitem{1}
+著者1, 著者2, 論文タイトル, 雑誌名, 巻 (出版年), 開始頁--終了頁.
+%
+\bibitem{2}
+著者, 文献名, 出版社, 出版年.
+%
+\bibitem{3}
+Author1, Author2 and Author3, Paper Title, Journal Name, Vol. (Year), $\ast\ast$--$\ast\ast$.
+%
+\bibitem{4}
+Author, Book Title, Publisher, Year.
+%
+\bibitem{5}
+Author1 and Author2, Paper Title, in: Proc. of Proceedings Name, Vol. $\ast\ast$, pp. $\ast\ast$--$\ast\ast$, Year.
+%
+\bibitem{6}
+JSIAM 2015 Official Page, \url{http://annual2015.jsiam.org/}.
+\end{thebibliography}
+※ 本文の出現順に並べてください．
+% ---------- 本文（ここまで）--------------------------------------------------------------------------------------------
+%
+\end{document}

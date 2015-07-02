@@ -1,0 +1,59 @@
+%2000/9/27Å@by E. Fujisaki
+% Def., Thm., Lemma, etc.
+
+\long\def\comment#1{}
+
+\newcommand{\email}[1]{\vspace{5pt}{\tt email:{#1}}}
+
+\comment{% Theorem 4.3..
+\newtheorem{definition}{Definition}[section] 
+\newtheorem{notation}[definition]{Notation} 
+\newtheorem{note}[definition]{Notation} % ajust to llncs.sty
+\newtheorem{proposition}[definition]{Proposition} 
+\newtheorem{theorem}[definition]{Theorem} 
+\newtheorem{lemma}[definition]{Lemma} 
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{assumption}[definition]{Assumption}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{example}[definition]{Example}
+\newtheorem{claim}[definition]{Claim}
+}
+
+%\comment{% Theorem 3..
+\newtheorem{definition}{Definition}
+\newtheorem{notation}{Notation} 
+\newtheorem{note}[definition]{Notation} % ajust to llncs.sty
+\newtheorem{proposition}{Proposition} 
+\newtheorem{theorem}{Theorem} 
+\newtheorem{lemma}{Lemma} 
+\newtheorem{corollary}{Corollary}
+\newtheorem{assumption}{Assumption}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+\newtheorem{claim}[definition]{Claim}
+%}
+
+% Qed
+\comment{
+\def\squareforqed{\hbox{\rlap{$\sqcap$}$\sqcup$}}
+\def\qed{\ifmmode\squareforqed\else{\unskip\nobreak\hfil
+\penalty50\hskip1em\null\nobreak\hfil\squareforqed
+\parfillskip=0pt\finalhyphendemerits=0\endgraf}\fi}
+}
+%\qqed
+%-- proof-endings 
+\def\blackslug
+{\hbox{\hskip 1pt\vrule width 8pt height 8pt depth 1.5pt\hskip 1pt}}
+\def\qed{\quad\blackslug\lower 8.5pt\null\par}
+\def\qqed{$\Box$}
+
+% Proof and Sketch of Proof
+\newenvironment{proof}{\par{\bf Proof.} 
+\smallskip}{\nopagebreak[4]\par} 
+
+\newenvironment{proofof}[1]{\par{\bf Proof ({#1}).} 
+\smallskip}{\nopagebreak[4]\par} 
+
+\newenvironment{sproof}{\par{\bf Proof (Sketch).} 
+\smallskip}{\nopagebreak[4]\par} 
+

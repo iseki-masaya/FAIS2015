@@ -1,0 +1,207 @@
+%\newcommand{\Client}{\mathcal{C}}
+%\newcommand{\Server}{\mathcal{S}}
+%\newcommand*{\accept}{\algo{accept}}
+\newcommand*{\reject}{\algo{reject}}
+\newcommand*{\peer}{\textsc{peer}}
+\newcommand*{\preaccept}{\algo{preaccept}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The function of the protocol in handshake
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand*{\scfgGen}{\ensuremath{\mathsf{scfgGen}}}
+\newcommand*{\inchoateCHLO}{\ensuremath{\mathsf{inchoateCHLO}}}
+\newcommand*{\initialCHLO}{\ensuremath{\mathsf{initialCHLO}}}
+\newcommand*{\initialSHLO}{\ensuremath{\mathsf{initialSHLO}}}
+\newcommand*{\checkQuery}{\ensuremath{\mathsf{checkQuery}}}
+\newcommand*{\receiveSHLO}{\ensuremath{\mathsf{receiveSHLO}}}
+\newcommand*{\receiveCHLO}{\ensuremath{\mathsf{receiveCHLO}}}
+\newcommand*{\checkSCFG}{\ensuremath{\mathsf{checkSCFG}}}
+\newcommand*{\checkSHLO}{\ensuremath{\mathsf{checkSHLO}}}
+\newcommand*{\makeSTK}{\ensuremath{\mathsf{makeSTK}}}
+\newcommand*{\CHLO}{\ensuremath{\mathsf{CHLO}}}
+\newcommand*{\REJ}{\ensuremath{\mathsf{REJ}}}
+\newcommand*{\SHLO}{\ensuremath{\mathsf{SHLO}}}
+\newcommand*{\zCHLO}{\ensuremath{\mathsf{zCHLO}}}
+\newcommand{\getPK}{\mathsf{getPK}}
+\newcommand{\Hash}{\mathsf{Hash}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The function of the protocol in key deriving
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand*{\getKey}{\ensuremath{\mathsf{getKey}}}
+\newcommand*{\extractKey}{\ensuremath{\mathsf{extractKey}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The function of the protocol in wirelayer
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand*{\getIV}{\ensuremath{\mathsf{getIV}}}
+\newcommand*{\pak}{\ensuremath{\mathsf{pak}}}
+\newcommand*{\processPacket}{\ensuremath{\mathsf{processPacket}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The operation in the protocol
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand*{\SIG}{\ensuremath{\mathsf{SIG}}}
+% \newcommand*{\Gen}{\ensuremath{\mathsf{Gen}}}   These protocol is defined in other macro.
+% \newcommand*{\Sign}{\ensuremath{\mathsf{Sign}}}
+\newcommand*{\Vfy}{\ensuremath{\mathsf{Vfy}}}
+\newcommand*{\SE}{\ensuremath{\mathsf{SE}}}
+% \newcommand*{\Enc}{\ensuremath{\mathsf{Enc}}}   These protocol is defined in other macro.
+% \newcommand*{\Dec}{\ensuremath{\mathsf{Dec}}}
+\newcommand*{\Init}{\ensuremath{\mathsf{Init}}}
+% \newcommand*{\PRF}{\ensuremath{\mathsf{PRF}}}
+\newcommand*{\abort}{\ensuremath{\mathsf{abort}}}
+\newcommand*{\cert}{\ensuremath{\mathsf{cert}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The parameter in the protocol
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand*{\SCFG}{\ensuremath{\mathsf{SCFG}}}
+\newcommand*{\STK}{\ensuremath{\mathsf{STK}}}
+\newcommand*{\NONC}{\ensuremath{\mathsf{NONC}}}
+\newcommand*{\SCID}{\ensuremath{\mathsf{SCID}}}
+\newcommand*{\cid}{\ensuremath{\mathsf{cid}}}
+\newcommand*{\sqn}{\ensuremath{\mathsf{sqn}}}
+\newcommand*{\ik}{\ensuremath{\mathsf{ik}}}
+\newcommand*{\expy}{\ensuremath{\mathsf{expy}}}
+\newcommand*{\iv}{\ensuremath{\mathsf{iv}}}
+\newcommand*{\plaintext}{\ensuremath{\mathsf{plaintext}}}
+\newcommand*{\doc}{\ensuremath{\mathsf{doc}}}
+\newcommand*{\info}{\ensuremath{\mathsf{info}}}
+\newcommand*{\duration}{\ensuremath{\mathsf{duration_t}}}
+\newcommand*{\fin}{\ensuremath{\mathsf{fin}}}
+\newcommand*{\mac}{\ensuremath{\mathsf{mac}}}
+\newcommand*{\MAC}{\ensuremath{\mathsf{MAC}}}
+\newcommand*{\return}{\ensuremath{\mathsf{return}}}
+\newcommand*{\pInfo}{\ensuremath{\mathsf{pInfo}}}
+\newcommand*{\init}{\ensuremath{\mathsf{init}}}
+\newcommand*{\shareInfo}{\ensuremath{\mathsf{shareInfo}}}
+\newcommand*{\strike}{\ensuremath{\mathsf{strike}}}
+\newcommand*{\MsgCntC}[1]{\ensuremath{\mathsf{p_c^{#1}}}}
+\newcommand*{\MsgCntS}[1]{\ensuremath{\mathsf{p_s^{#1}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The number of oracle or party in the definition
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand*{\nclient}{\ensuremath{n_c}}
+\newcommand*{\nserver}{\ensuremath{n_s}}
+\newcommand*{\noracle}{\ensuremath{n_o}}
+\newcommand*{\nresumption}{\ensuremath{n_{\ell}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The oracle in the definition
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand*{\pOracleAstFull}{\ensuremath{\pi^{p^{\ast}}_{i^{\ast},0}}}
+\newcommand*{\qOracleAstFull}{\ensuremath{\pi^{q^{\ast}}_{j^{\ast},0}}}
+\newcommand*{\cOracleAstFull}{\ensuremath{\pi^{c^{\ast}}_{i^{\ast},0}}}
+\newcommand*{\sOracleAstFull}{\ensuremath{\pi^{s^{\ast}}_{j^{\ast},0}}}
+\newcommand*{\pOracleAstOne}{\ensuremath{\pi^{p^{\ast}}_{i^{\ast},1}}}
+\newcommand*{\qOracleAstOne}{\ensuremath{\pi^{q^{\ast}}_{j^{\ast},1}}}
+\newcommand*{\cOracleAstOne}{\ensuremath{\pi^{c^{\ast}}_{i^{\ast},1}}}
+\newcommand*{\sOracleAstOne}{\ensuremath{\pi^{s^{\ast}}_{j^{\ast},1}}}
+\newcommand*{\pOracleAstRes}{\ensuremath{\pi^{p^{\ast}}_{i^{\ast},\ell^{\ast}}}}
+\newcommand*{\qOracleAstRes}{\ensuremath{\pi^{q^{\ast}}_{j^{\ast},\ell^{\ast}}}}
+\newcommand*{\cOracleAstRes}{\ensuremath{\pi^{c^{\ast}}_{i^{\ast},\ell^{\ast}}}}
+\newcommand*{\sOracleAstRes}{\ensuremath{\pi^{s^{\ast}}_{j^{\ast},\ell^{\ast}}}}
+\newcommand*{\pOracleAstEll}{\ensuremath{\pi^{p^{\ast}}_{i^{\ast},\ell}}}
+\newcommand*{\qOracleAstEll}{\ensuremath{\pi^{q^{\ast}}_{j^{\ast},\ell}}}
+\newcommand*{\sOracleAstEll}{\ensuremath{\pi^{s^{\ast}}_{i^{\ast},\ell}}}
+\newcommand*{\cOracleAstEll}{\ensuremath{\pi^{c^{\ast}}_{j^{\ast},\ell}}}
+\newcommand*{\pOracleAstResMinusOne}{\ensuremath{\pi^{p^{\ast}}_{i^{\ast},\ell^{\ast}-1}}}
+\newcommand*{\qOracleAstResMinusOne}{\ensuremath{\pi^{q^{\ast}}_{j^{\ast},\ell^{\ast}-1}}}
+\newcommand*{\sOracleAstResMinusOne}{\ensuremath{\pi^{s^{\ast}}_{i^{\ast},\ell^{\ast}-1}}}
+\newcommand*{\cOracleAstResMinusOne}{\ensuremath{\pi^{c^{\ast}}_{j^{\ast},\ell^{\ast}-1}}}
+\newcommand*{\pOracleAstEllPlusOne}{\ensuremath{\pi^{p^{\ast}}_{i^{\ast},\ell+1}}}
+\newcommand*{\qOracleAstEllPlusOne}{\ensuremath{\pi^{q^{\ast}}_{j^{\ast},\ell+1}}}
+\newcommand*{\sOracleAstEllPlusOne}{\ensuremath{\pi^{s^{\ast}}_{i^{\ast},\ell+1}}}
+\newcommand*{\cOracleAstEllPlusOne}{\ensuremath{\pi^{c^{\ast}}_{j^{\ast},\ell+1}}}
+\newcommand*{\pOracleAstX}{\ensuremath{\pi^{p^{\ast}}_{i^{\ast},x}}}
+\newcommand*{\qOracleAstX}{\ensuremath{\pi^{q^{\ast}}_{j^{\ast},x}}}
+\newcommand*{\sOracleAstX}{\ensuremath{\pi^{s^{\ast}}_{i^{\ast},x}}}
+\newcommand*{\cOracleAstX}{\ensuremath{\pi^{c^{\ast}}_{j^{\ast},x}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The index in the definition
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand*{\cIndexAstRes}{\ensuremath{(c^{\ast}, {i^{\ast}, \ell^{\ast})}}}
+\newcommand*{\sIndexAstRes}{\ensuremath{(s^{\ast}, {j^{\ast}, \ell^{\ast})}}}
+\newcommand*{\pIndexAstRes}{\ensuremath{(p^{\ast}, {i^{\ast}, \ell^{\ast})}}}
+\newcommand*{\qIndexAstRes}{\ensuremath{(q^{\ast}, {j^{\ast}, \ell^{\ast})}}}
+\newcommand*{\pIndexAstEll}{\ensuremath{(p^{\ast}, i^{\ast}, \ell)}}
+\newcommand*{\qIndexAstEll}{\ensuremath{(q^{\ast}, i^{\ast}, \ell)}}
+\newcommand*{\pindex}{\ensuremath{(p^{\ast}, i^{\ast}, \ell^{\ast})}}
+\newcommand*{\qindex}{\ensuremath{(q^{\ast}, j^{\ast}, \ell^{\ast})}}
+\newcommand*{\cindex}{\ensuremath{(c^{\ast}, i^{\ast}, \ell^{\ast})}}
+\newcommand*{\sindex}{\ensuremath{(s^{\ast}, j^{\ast}, \ell^{\ast})}}
+\newcommand*{\cindexell}{\ensuremath{(c^{\ast}, i^{\ast}, \ell)}}
+\newcommand*{\sindexell}{\ensuremath{(s^{\ast}, j^{\ast}, \ell)}}
+\newcommand*{\cindexellast}{\ensuremath{(c^{\ast}, i^{\ast}, \ell^{\ast})}}
+\newcommand*{\sindexellast}{\ensuremath{(s^{\ast}, j^{\ast}, \ell^{\ast})}}
+\newcommand*{\pindexell}{\ensuremath{(p^{\ast}, i^{\ast}, \ell)}}
+\newcommand*{\qindexell}{\ensuremath{(q^{\ast}, j^{\ast}, \ell)}}
+\newcommand*{\pindexellast}{\ensuremath{(p^{\ast}, i^{\ast}, \ell^{\ast})}}
+\newcommand*{\qindexellast}{\ensuremath{(q^{\ast}, j^{\ast}, \ell^{\ast})}}
+\newcommand*{\pindexX}{\ensuremath{(p^{\ast}, i^{\ast}, x)}}
+\newcommand*{\qindexX}{\ensuremath{(q^{\ast}, j^{\ast}, x)}}
+\newcommand*{\pindexzero}{\ensuremath{(p^{\ast}, i^{\ast}, 0)}}
+\newcommand*{\qindexzero}{\ensuremath{(q^{\ast}, j^{\ast}, 0)}}
+\newcommand*{\pindexout}{\ensuremath{(p^{\ast}, i^{\ast}, \ell^{\ast}, b^{\prime})}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The assumption
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \newcommand*{\sig}{\ensuremath{\mathsf{sig}}}
+\newcommand*{\ddh}{\ensuremath{\mathsf{ddh}}}
+\newcommand*{\prfodh}{\ensuremath{\mathsf{prfodh}}}
+\newcommand*{\sLHAE}{\ensuremath{\mathsf{LHAE}}}
+\newcommand*{\LHAE}{\ensuremath{\mathsf{LHAE}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The property of RSACCE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand*{\rsaccesa}{\ensuremath{\mathsf{rsacce\shyph sa}}}
+\newcommand*{\rsaccecb}{\ensuremath{\mathsf{rsacce\shyph cb}}}
+\newcommand*{\rsaccecc}{\ensuremath{\mathsf{rsacce\shyph cc}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The operation of the adversary
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand*{\Initiate}{\ensuremath{\mathsf{Initiate}}}
+\newcommand*{\Resume}{\ensuremath{\mathsf{Resume}}}
+\newcommand*{\Send}{\ensuremath{\mathsf{Send}}}
+\newcommand*{\Reveal}{\ensuremath{\mathsf{Reveal}}}
+\newcommand*{\Corrupt}{\ensuremath{\mathsf{Corrupt}}}
+\newcommand*{\Encrypt}{\ensuremath{\mathsf{Encrypt}}}
+\newcommand*{\Decrypt}{\ensuremath{\mathsf{Decrypt}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The client, server, and, party
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\Client}{\mathcal{C}}
+\newcommand{\Server}{\mathcal{S}}
+\newcommand{\Party}{\mathcal{P}}
