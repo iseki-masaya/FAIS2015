@@ -89,16 +89,15 @@ as does TLS.
 Similarly to TLS, QUIC has two types of handshake connections.
 One is called a full handshake --
 a handshake ``from scratch" between a client and a server.
-The other is called a abbreviate handshake -- a handshake which occurs when a client and a server have once established a full handshake session
+The other is called an abbreviate handshake -- a handshake which occurs when a client and a server have once established a full handshake session
 and want to establish a new session between them in an abbreviate way.
 Unlike TLS,
 QUIC only supports the elliptic-curve Diffie-Hellman key-exchange (ECDHE) cipher-suite and server authentication.
 %
-One of the good features of QUIC is that it can establish a abbreviate handshake session
+One of the good features of QUIC is that it can establish an abbreviate handshake session
 with $0$-RTT connectivity overhead.
 Namely, in the QUIC abbreviate handshake, a client can
 send encrypted data to a server, concurrently with establishing a new session.
-We provide the abstract model of the full and abbreviate handshake and of QUIC.
 
 % ---------------------------------------
 \section{Prior Security Analyses and Some Security Concern}
@@ -109,7 +108,10 @@ Both papers define new security models and show that QUIC is secure in that mode
 In~\cite{LJBN15:QUIC}, they formalized a secure authenticated key-exchange
 as an extension of the ACCE model~\cite{JKSS12:ACCE} and analysed
 the security of QUIC.
-They prove the security of QUIC as it is and found a new attack.
+They prove the security of QUIC as it is.
+However, they also found that with replay attack on some public parameters exchanged during the handshake, an adversary could easily prevent QUIC from achieving minimal latency advantages either by having it fall back to TCP or by causing the client and server to have an inconsistent view of their handshake leading to a failure to complete the connection.
+The adversary also can apply loads on the server using these attacks.
+Their security model does not consider these attacks to prove the security of QUIC as it is.
 
 
 %=====================================
@@ -119,14 +121,13 @@ There are a huge body of works on authenticated key exchange protocols
 (See~\cite{CK01:AKE} for survey).
 An important stream of research dates back to Bellare and Rogaway~\cite{BR93:AKE}.
 % followed by~\cite{DB96,Blei98,JMDP00,JB02,EK09,KK05:TLS,KCRE08,SMOAJ08,KTT11,Kraw01}.
-However, as mentioned above,
+However,
 the QUIC full handshake protocol does not satisfy key-indistinguishability as in the Bellare-Rogaway like model, because a server sends a ciphertext (using authenitcated encryption) in the full handshake protocol, as does TLS.
-TLS Handshake Protocol is recently analysed in various security models, e.g., ~\cite{JKSS12:ACCE,KPW13:SACCE,FS13:ACCE,GKS13:RACCE,BDKSS14:SSH,BFKPSB14:TLS}.
+TLS Handshake Protocol is recently analysed in various security models, e.g., ~\cite{JKSS12:ACCE,KPW13:SACCE,FS13:ACCE,BFKPSB14:TLS}.
 Still,
 the security model for analysing a server-only authenticated connection of TLS,
-i.e., Server-Only Authenticated and Confidential Channel Establishment
-(SACCE)~\cite{KPW13:SACCE}, does not capture our security issues.
-This is because, besides not treating the resumption originally,
+i.e., Server-Only Authenticated and Confidential Channel Establishment (SACCE) \cite{KPW13:SACCE}, does not capture our security issues.
+This is because, besides not treating the abbreviate handshake originally,
 the SACCE security model only concerns, which is more essential,
 \textit{server} authentication and a \textit{client's} message confidentiality.
 However, these issues appear in (some kind of) \textit{client} authentication
@@ -136,33 +137,29 @@ and \textit{server} confidentiality.
 \subsection{Our Results} \label{sec:proposal}
 %--------------------------------------------------------
 
-To treat the security issues above,
+Our contributions are:
+\begin{itemize}
+ \item{A security model which consider the attacks.}
+ \item{A new scheme which prevent the attacks.}
+\end{itemize}
+
+To prevent the security issues above,
 we introduce a new security model, what we call \textit{Resumable} SACCE (RSACCE) security,
 where we consider a server's message confidentiality, as well as a client's message confidentiality,
 where an adversary is allowed to send an encryption query to a \textit{server}
 (to break a server's message confidentiality)
-both in the full handshake session and its successor resumption sessions,
+both in the full handshake session and its successor abbreviate handshake sessions,
 as far as the server establishes the initial full handshake session
 with a \textit{honest} client.
-We also provide a stronger model, called strong RSACCE security,
-where we ensure that a sever can establish a resumption session only with the \textit{same} client as
-initially connected in the full handshake session.
-We require in that model forward secrecy among all independent sessions.
-For resumption to be effective, we compromise but still require
-some level of forward secrecy among related resumption sessions.
+We also provide a new handshake scheme which satisfy RSACCE security.
 
 
-%
-We analyse QUIC as it is, and prove that QUIC meets RSACCE security, but it does not meet
-the strong RSACCE one.
-We also analyse an optional version of QUIC with CETV, QUIC with an optional client encrypted tag value
-(CETV) mechanism, and show that it meets strong RSACCE security.
 
-% -------
-\thanks
-% -------
-%
-\dotfill \\ \dotfill
+% % -------
+% \thanks
+% % -------
+% %
+% \dotfill \\ \dotfill
 
 \bibliographystyle{junsrt}
 \bibliography{mybib,confCryp,confComp}
