@@ -103,9 +103,7 @@ send encrypted data to a server, concurrently with establishing a new session.
 \section{Prior Security Analyses and Some Security Concern}
 % ---------------------------------------
 
-To the best of our knowledge, there are only two security analyses on QUIC~\cite{FG14:QUIC,LJBN15:QUIC}.
-Both papers define new security models and show that QUIC is secure in that model.
-In~\cite{LJBN15:QUIC}, they formalized a secure authenticated key-exchange
+To the best of our knowledge, there are two security analyses on QUIC~\cite{FG14:QUIC,LJBN15:QUIC}. In particular, the latter consider the security of QUIC as it is. They formalized a secure authenticated key-exchange
 as an extension of the ACCE model~\cite{JKSS12:ACCE} and analysed
 the security of QUIC.
 They prove the security of QUIC as it is.
@@ -123,14 +121,12 @@ An important stream of research dates back to Bellare and Rogaway~\cite{BR93:AKE
 % followed by~\cite{DB96,Blei98,JMDP00,JB02,EK09,KK05:TLS,KCRE08,SMOAJ08,KTT11,Kraw01}.
 However,
 the QUIC full handshake protocol does not satisfy key-indistinguishability as in the Bellare-Rogaway like model, because a server sends a ciphertext (using authenitcated encryption) in the full handshake protocol, as does TLS.
-TLS Handshake Protocol is recently analysed in various security models, e.g., ~\cite{JKSS12:ACCE,KPW13:SACCE,FS13:ACCE,BFKPSB14:TLS}.
+TLS Handshake Protocol is recently analysed in various security models, e.g., ~\cite{JKSS12:ACCE,KPW13:SACCE,BFKPSB14:TLS}.
 Still,
 the security model for analysing a server-only authenticated connection of TLS,
-i.e., Server-Only Authenticated and Confidential Channel Establishment (SACCE) \cite{KPW13:SACCE}, is not appropriate for QUIC.
-This is because that the abstract model of handshake between QUIC and TLS is different.
-In QUIC, the client and server share two keys which are initial key $ik$ and forward secure key $k$ and
-secrets are not reused in an abbreviate handshake.
-On the other hand, in TLS, the client and server share one key and reuse the secrets in an abbreviate handshake.
+i.e., Server Only Authenticated and Confidential Channel Establishment (SACCE) \cite{KPW13:SACCE}, is not appropriate for QUIC.
+There are two reasons. First, the abstract model of handshake between QUIC and TLS is different. In QUIC, the client and server share two keys which are initial key $ik$ and forward secure key $k$ and secrets are not reused in an abbreviate handshake. On the other hand, in TLS, the client and server share one key and reuse the secrets in an abbreviate handshake. Second, the security model proposed in the previous study does not consider the consistency of the client between a full handshake and abbreviate handshakes.
+The second reasons is important in order to prevent the attacks \cite{LJBN15:QUIC}
 
 %--------------------------------------------------------
 \subsection{Our Results} \label{sec:proposal}
@@ -138,11 +134,11 @@ On the other hand, in TLS, the client and server share one key and reuse the sec
 
 Our contributions are:
 \begin{itemize}
- \item{A security model which consider the attacks.}
- \item{A new scheme which prevent the attacks.}
+ \item{A security model which is appropriate for QUIC and consider the consistency of the client.}
+ \item{A new scheme which is more secure and efficient than original one.}
 \end{itemize}
 
-To prevent the security issues above,
+To analyse our proposed scheme,
 we introduce a new security model, what we call \textit{Resumable} SACCE (RSACCE) security,
 where we consider a server's message confidentiality, as well as a client's message confidentiality,
 where an adversary is allowed to send an encryption query to a \textit{server}
@@ -150,7 +146,6 @@ where an adversary is allowed to send an encryption query to a \textit{server}
 both in the full handshake session and its successor abbreviate handshake sessions,
 as far as the server establishes the initial full handshake session
 with a \textit{honest} client.
-We also provide a new handshake scheme which satisfy RSACCE security.
 
 
 
